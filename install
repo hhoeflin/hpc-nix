@@ -1,0 +1,20 @@
+# install nix in profile, a cacert and the nixpkgs
+nix=/home/hoeflho1/nix/store/fyyaz2p2qa1wapiha0mkhdxb4vn51nj3-nix-2.5.1
+
+if ! "$nix/bin/nix-env" -i "$nix"; then
+    echo "$0: unable to install Nix into your default profile" >&2
+    exit 1
+fi
+
+# Subscribe the user to the Nixpkgs channel and fetch it.
+if [ -z "$NIX_INSTALLER_NO_CHANNEL_ADD" ]; then
+    if ! "$nix/bin/nix-channel" --list | grep -q "^nixpkgs "; then
+        "$nix/bin/nix-channel" --add https://nixos.org/channels/nixpkgs-unstable
+    fi
+    if [ -z "$_NIX_INSTALLER_TEST" ]; then
+        if ! "$nix/bin/nix-channel" --update nixpkgs; then
+            echo "Fetching the nixpkgs channel failed. (Are you offline?)"
+            echo "To try again later, run \"nix-channel --update nixpkgs\"."
+        fi
+    fi
+fi

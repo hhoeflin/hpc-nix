@@ -1,9 +1,11 @@
 with (import ./nixpkgs {});
 
-let prefix = "/home/hoeflho1";
+let prefix = "/home/hoeflho1/nix";
 in
   (nix.override {
-    storeDir = "${prefix}/nix/store";
-    stateDir = "${prefix}/nix/var";
-    confDir = "${prefix}/nix/etc";
+    storeDir = "${prefix}/store";
+    stateDir = "${prefix}/var/nix";
+    confDir = "${prefix}/etc/nix";
+  }).overrideAttrs (oldAttrs: rec {
+    patches = (oldAttrs.patches or []) ++ [./disable_sandbox.patch];
   })
