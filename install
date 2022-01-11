@@ -1,6 +1,8 @@
 # install nix in profile, a cacert and the nixpkgs
 nix=/home/hoeflho1/nix/store/fyyaz2p2qa1wapiha0mkhdxb4vn51nj3-nix-2.5.1
 
+. vars.sh
+
 if ! "$nix/bin/nix-env" -i "$nix"; then
     echo "$0: unable to install Nix into your default profile" >&2
     exit 1
